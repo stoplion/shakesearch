@@ -9,6 +9,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -18,7 +19,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fs := http.FileServer(http.Dir("./static"))
+	fs := http.FileServer(http.Dir("./dist"))
 	http.Handle("/", fs)
 
 	http.HandleFunc("/search", handleSearch(searcher))
@@ -28,7 +29,7 @@ func main() {
 		port = "3001"
 	}
 
-	fmt.Printf("Listening on port %s...", port)
+	fmt.Println("Listening on port %s...", port)
 	err = http.ListenAndServe(fmt.Sprintf(":%s", port), nil)
 	if err != nil {
 		log.Fatal(err)
@@ -67,16 +68,36 @@ func (s *Searcher) Load(filename string) error {
 	if err != nil {
 		return fmt.Errorf("Load: %w", err)
 	}
+
 	s.CompleteWorks = string(dat)
 	s.SuffixArray = suffixarray.New(dat)
 	return nil
 }
 
 func (s *Searcher) Search(query string) []string {
-	idxs := s.SuffixArray.Lookup([]byte(query), -1)
+	query, query1, query2 :=
+		strings.ToLower(query),
+		strings.ToUpper(query),
+		strings.Title(query)
+
+	idxs, idxs1, idxs2 :=
+		s.SuffixArray.Lookup([]byte(query), -1),
+		s.SuffixArray.Lookup([]byte(query1), -1),
+		s.SuffixArray.Lookup([]byte(query2), -1)
+
 	results := []string{}
+
 	for _, idx := range idxs {
 		results = append(results, s.CompleteWorks[idx-250:idx+250])
 	}
+
+	for _, idx := range idxs1 {
+		results = append(results, s.CompleteWorks[idx-250:idx+250])
+	}
+
+	for _, idx := range idxs2 {
+		results = append(results, s.CompleteWorks[idx-250:idx+250])
+	}
+
 	return results
 }

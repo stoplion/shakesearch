@@ -1,0 +1,99 @@
+$primary: #64d9a8;
+$gray: #bdbdbd;
+$radius: 10px;
+$yellow: #ffe200b8;
+
+body,
+form,
+input,
+* {
+  font-size: 1rem;
+}
+
+body {
+  background: #f5f4f4;
+  padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding-bottom: 5rem;
+}
+
+#form {
+  width: 100%;
+  background: white;
+  border: 1px solid $gray;
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  padding: 0.7rem;
+
+  input {
+    min-width: 24rem;
+    padding: 0.7rem;
+    border-width: 1px 0 1px 1px;
+    border-style: solid;
+    border-color: $gray;
+    border-radius: $radius 0 0 $radius;
+    outline: none;
+
+    &::placeholder {
+      color: $gray;
+    }
+  }
+
+  button {
+    background: $primary;
+    border: 0;
+    border-radius: 0 $radius $radius 0;
+    padding: 0 1rem;
+    transition: background;
+    cursor: pointer;
+    outline: none;
+
+    &:hover {
+      background: darken($primary, 10%);
+    }
+  }
+}
+
+#search-results {
+  padding-top: 100px;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  width: 1000px;
+}
+
+table {
+  border-collapse: collapse;
+
+  .result-item {
+    padding-bottom: 1.5rem;
+  }
+
+  .result-body {
+    border: 1px solid $gray;
+    border-radius: 14px;
+    padding: 1rem;
+    line-height: 1.45rem;
+    background: white;
+  }
+
+  .highlight-query {
+    padding: 1px 4px;
+    border-radius: 5px;
+    background: $yellow;
+  }
+}
+
+.no-results {
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+#search-header {
+  padding: 0 0 1.75rem 0;
+  font-size: 1.2rem;
+  margin: 0;
+}
